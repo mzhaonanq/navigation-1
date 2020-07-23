@@ -123,8 +123,11 @@ var $lastLi = $siteList.find("li.last");
 var x = localStorage.getItem("x");
 var xObject = JSON.parse(x);
 var hashMap = xObject || [{
-  logo: "A",
-  url: "https://www.acfun.cn"
+  logo: "G",
+  url: "https://github.com"
+}, {
+  logo: "I",
+  url: "https://www.iconfont.cn"
 }, {
   logo: "B",
   url: "https://bilibili.com"
@@ -181,4 +184,4 @@ $(document).on("keypress", function (e) {
   }
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.a96624ff.js.map
+//# sourceMappingURL=main.35c95e18.js.map
