@@ -169,7 +169,6 @@ $(".addButton").on("click", function () {
 });
 
 window.onbeforeunload = function () {
-  console.log("页面要关闭了");
   var string = JSON.stringify(hashMap);
   localStorage.setItem("x", string);
 };
@@ -184,4 +183,4 @@ $(document).on("keypress", function (e) {
   }
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.35c95e18.js.map
+//# sourceMappingURL=main.942adfa0.js.map

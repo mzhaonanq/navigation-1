@@ -54,7 +54,6 @@ $(".addButton").on("click", () => {
 });
 
 window.onbeforeunload = () => {
-  console.log("页面要关闭了");
   const string = JSON.stringify(hashMap);
   localStorage.setItem("x", string);
 };
