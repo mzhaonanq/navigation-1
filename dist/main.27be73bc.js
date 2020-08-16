@@ -120,9 +120,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"epB2":[function(require,module,exports) {
 var $siteList = $(".siteList");
 var $lastLi = $siteList.find("li.last");
-var x = localStorage.getItem("x");
-var xObject = JSON.parse(x);
-var hashMap = xObject || [{
+var x = localStorage.getItem("x"); //获取存储在localStorage里的x
+
+var xObject = JSON.parse(x); //将字符串转为对象
+
+var hashMap = xObject || [//如果xObject不为null，则hashMap===xObject
+//第一次进入是xObject===null，所以haspMap会等于后面的那个数组对象
+//之后 hashMap===xObject
+//即使页面上的原有的三个logo都删完了，hashMap依旧取值xObject，因为那时xObject=[]，不是falsy值
+{
   logo: "G",
   url: "https://github.com"
 }, {
@@ -138,16 +144,18 @@ var simplifyUrl = function simplifyUrl(url) {
 };
 
 var render = function render() {
-  $siteList.find("li:not(.last)").remove();
+  $siteList.find("li:not(.last)").remove(); //在添加或删除logo后，清空之前存在的logo，再将新的hashMap加载到HTML中去
+
   hashMap.forEach(function (node, index) {
-    var $li = $("<li>\n          <div class=\"site\">\n              <div class=\"logo\">".concat(node.logo, "</div>\n              <div class=\"link\">").concat(simplifyUrl(node.url), "</div>\n              <div class=\"close\">\n              <svg class=\"icon\">\n              <use xlink:href=\"#icon-close\"></use>\n          </svg></div>\n          </div>\n  </li>")).insertBefore($lastLi);
+    var $li = $("<li>\n          <div class=\"site\">\n              <div class=\"logo\">".concat(node.logo, "</div>\n              <div class=\"link\">").concat(simplifyUrl(node.url), "</div>\n              <div class=\"close\">\n              <svg class=\"icon\">\n              <use xlink:href=\"#icon-close\"></use>\n          </svg></div>\n          </div>\n  </li>")).insertBefore($lastLi); //同级别插入
+
     $li.on("click", function () {
       window.open(node.url);
     });
     $li.on("click", ".close", function (e) {
       e.stopPropagation();
       hashMap.splice(index, 1);
-      render();
+      render(); //删除logo后重新渲染页面
     });
   });
 };
@@ -161,26 +169,32 @@ $(".addButton").on("click", function () {
   }
 
   hashMap.push({
+    //将添加的网址加入hashMap
     logo: simplifyUrl(url)[0].toUpperCase(),
     logoType: "text",
     url: url
   });
-  render();
+  render(); //添加新logo后重新渲染页面
 });
 
 window.onbeforeunload = function () {
-  var string = JSON.stringify(hashMap);
-  localStorage.setItem("x", string);
+  var string = JSON.stringify(hashMap); //将数组对象转为字符串
+
+  localStorage.setItem("x", string); //将页面关闭时hashMap的string信息传给x接收
 };
 
 $(document).on("keypress", function (e) {
-  var key = e.key;
+  while (!e.target.matches("input")) {
+    var key = e.key;
 
-  for (var i = 0; i < hashMap.length; i++) {
-    if (hashMap[i].logo.toLocaleLowerCase() === key) {
-      window.open(hashMap[i].url);
+    for (var i = 0; i < hashMap.length; i++) {
+      if (hashMap[i].logo.toLocaleLowerCase() === key) {
+        window.open(hashMap[i].url);
+      }
     }
+
+    break;
   }
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.942adfa0.js.map
+//# sourceMappingURL=main.27be73bc.js.map
